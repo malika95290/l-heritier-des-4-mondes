@@ -162,6 +162,10 @@ touches = [touche_haut, touche_bas, touche_gauche, touche_droite]
 # Variable pour savoir si la fenêtre Paramètres est ouverte ou non
 paramètres_ouvert = False
 
+#Pour définir l'image de fond du menu
+fond = pygame.image.load("C://Users//amo95//OneDrive//Bureau//jungle.png")
+fond = pygame.transform.scale(fond, (1200, 700))
+
 #fonctions
 def lancer_jeu():
     print("Le jeu se lance !")
@@ -169,6 +173,7 @@ def lancer_jeu():
 def dessiner_fenetre_paramètres(surface):
     
     #Création d'une surface semi-transparente pour le fond flou
+    # Le fond est déjà affiché derrière, l'overlay assombrit juste dessus
     overlay = pygame.Surface((1200, 700), pygame.SRCALPHA)
     overlay.fill((0, 0, 0, 150))  #Noir avec transparence (150/255)
     surface.blit(overlay, (0, 0))
@@ -188,7 +193,7 @@ def dessiner_fenetre_paramètres(surface):
 
     #Label "COMMANDES" pour la section des touches
     label_commandes = font_param.render("COMMANDES", True, BLANC)
-    surface.blit(label_commandes, (520, 173))
+    surface.blit(label_commandes, (535, 173))
 
     #Dessine chaque touche
     for touche in touches:
@@ -208,14 +213,14 @@ def dessiner_fenetre_paramètres(surface):
     #Dessine le bouton Retour
     bouton_retour.dessiner(surface)
 
-#la boucle principal
-running = True
-while running:
+#la boucle principale
+while True:
     pos_souris = pygame.mouse.get_pos()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            pygame.quit()
+            exit()
 
         #Si la fenêtre Paramètres est OUVERTE
         if paramètres_ouvert:
@@ -248,8 +253,8 @@ while running:
                 if bouton_paramètres.est_clique(pos_souris):
                     paramètres_ouvert = True  #Ouvre la fenêtre Paramètres
 
-    #Affichage
-    screen.fill(NOIR)
+    #Affichage du fond (toujours dessiné en premier, même en paramètres)
+    screen.blit(fond, (0, 0))  # (0, 0) = coin supérieur gauche de la fenêtre
 
     #Dessine toujours les boutons du menu en arrière-plan
     bouton_jouer.verifier_survol(pos_souris)
