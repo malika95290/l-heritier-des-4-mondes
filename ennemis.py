@@ -1,0 +1,1 @@
+# Création de la classe mère pour les ennemis
